@@ -21,6 +21,7 @@ public class FormCadastro3 extends Frame {
 	/* end components */
 
 	private Pessoa umaPessoa = new Pessoa();
+	private char selectedSex;
 
 	public FormCadastro3(String title, int width, int height) {
 		super(title);
@@ -47,7 +48,11 @@ public class FormCadastro3 extends Frame {
 		// sex input
 		painelSuperior.add(new JLabel("Sexo:"));
 		Panel painelSexo = new Panel(new GridLayout(1, 2));
+
+		mRadioButton.addActionListener(e -> selectM());
 		painelSexo.add(mRadioButton);
+
+		fRadioButton.addActionListener(e -> selectF());
 		painelSexo.add(fRadioButton);
 		painelSuperior.add(painelSexo);
 
@@ -75,27 +80,42 @@ public class FormCadastro3 extends Frame {
 	}
 
 	public void createPerson() {
-		char sexChar = 'f';
-		if (sexChar == 'f' || sexChar == 'm') {
-			String nome = txtNome.getText();
-			char sexo = sexChar;
-			int idade = Integer.parseInt(txtAge.getText());
+		String nome = txtNome.getText();
+		char sexo = selectedSex;
+		int idade = Integer.parseInt(txtAge.getText());
 
-			umaPessoa.setNome(nome);
-			umaPessoa.setSexo(sexo);
-			umaPessoa.setIdade(idade);
+		umaPessoa.setNome(nome);
+		umaPessoa.setSexo(sexo);
+		umaPessoa.setIdade(idade);
 
-			Pessoa.setKp();
-		} else {
-			JOptionPane.showMessageDialog(this, "Você não digitou um sexo válido", "Erro!",
-					JOptionPane.ERROR_MESSAGE);
-		}
+		Pessoa.setKp();
+	}
+
+	public void selectF() {
+		if (mRadioButton.isSelected())
+			mRadioButton.setSelected(false);
+
+		fRadioButton.setSelected(true);
+		selectedSex = 'F';
+	}
+
+	public void selectM() {
+		if (fRadioButton.isSelected())
+			fRadioButton.setSelected(false);
+
+		mRadioButton.setSelected(true);
+		selectedSex = 'M';
 	}
 
 	public void clearForm() {
 		txtAge.setText("");
 		txtNome.setText("");
-		// txtSex.setText("");
+
+		if (fRadioButton.isSelected())
+			fRadioButton.setSelected(false);
+
+		if (mRadioButton.isSelected())
+			mRadioButton.setSelected(false);
 	}
 
 	public void showData() {
